@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Phone Number parser/ input validator </title>
+
+    <!-- Bootstrap core CSS -->
+   <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="/static/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/cover.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="static/css/ie-emulation-modes-warning.js"></script>
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">Pigeonly - Submission</h3>
+              <nav>
+                <ul class="nav masthead-nav">
+                  <li class="active"><a href="#">Home</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+        <div class="inner cover">
+          <div id="manager">
+  
+
+          </div> <!-- div manager -->
+          
+          <div id="test" class="test" style="width:500px; margin-left:100px;">
+
+            <form action="" class="form-signin" onsubmit="get_numbers(); return false;">
+              <h2 class="form-signin-heading">Please type your text below</h2>
+
+
+             <textarea name="phone_field" id="phone_field" class="form-control" required></textarea>
+
+
+              </br>
+              <button class="btn btn-sm btn-primary btn-block" type="submit">Submit</button>
+            </form>
+  
+
+          </div><!-- div text form -->
+            <div id="answer" class="answer" style="text-align:left; margin-left:120px; color:tomato;padding: 10px;">
+              <p id="p1"></p>
+
+            </div>
+
+        </div> <!-- div inner cover -->
+
+          <div class="mastfoot">
+            <div class="inner">
+               <p>based on cover template <a href="http://getbootstrap.com">Bootstrap</a><a href="https://twitter.com/mdo"></a></p>
+
+            </div>
+          </div> <!-- div mastfoot -->
+
+        </div> <!-- div cover-container --> 
+      
+      </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="/static/js/ie10-viewport-bug-workaround.js"></script>
+      <script>
+      
+      function get_numbers(){
+
+            var text = document.getElementById('phone_field').value; 
+            document.getElementById('answer').innerHTML=''
+            var ln = text.replace(/ /g,'').length ; 
+            if (text.length > 300 || text.length < 5) return show_answer('input string must be between 5 and 300 characters');
+
+            function show_answer(text){
+              var newp = document.createElement("p")
+              newp.innerHTML = text; 
+              document.getElementById('answer').appendChild(newp)
+
+            }
+
+
+              $.ajax ({
+                        url: '/submit',
+                        data: {'phone_field' : text},
+            
+                        type: 'POST',
+                        success: function(response) {
+              
+                          var res = JSON.parse(response);
+
+                          if (! res['numbers'] ) return show_answer("Error: no response was recieved. please provide valid input.");
+                          
+                          show_answer("Response:")
+                          res['numbers'].forEach(show_answer);
+
+                        },
+                        error: function(error) {
+
+                          show_answer('Server Error: Please try again later');
+  
+                        }
+                    });
+
+          }//get_numbers
+
+        </script>
+
+  </body>
+</html>
