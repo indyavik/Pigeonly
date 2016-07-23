@@ -111,7 +111,7 @@
             var text = document.getElementById('phone_field').value; 
             document.getElementById('answer').innerHTML=''
             var ln = text.replace(/ /g,'').length ; 
-            if (text.length > 300 || text.length < 5) return show_answer('input string must be between 5 and 300 characters');
+            if (text.length > 300 || text.length < 10) return show_answer('input string must be between 10 and 300 characters');
 
             function show_answer(text){
               var newp = document.createElement("p")
